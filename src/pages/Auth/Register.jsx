@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import WhiteLogo from "../../assets/img/logo-white.png";
 
 const Register = () => {
   return (
@@ -9,11 +10,7 @@ const Register = () => {
           <div className="container">
             <div className="loginbox">
               <div className="login-left">
-                <img
-                  className="img-fluid"
-                  src="assets/img/logo-white.png"
-                  alt="Logo"
-                />
+                <img className="img-fluid" src={WhiteLogo} alt="Logo" />
               </div>
               <div className="login-right">
                 <div className="login-right-wrap">
