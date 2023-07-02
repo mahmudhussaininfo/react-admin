@@ -1,9 +1,10 @@
 import Logo from "../../assets/img/logo.png";
 import Avatar from "../../assets/img/profiles/avatar-01.jpg";
-import Doctor from "../../assets/img/doctors/doctor-thumb-01.jpg";
 import Patient1 from "../../assets/img/patients/patient1.jpg";
 import Patient2 from "../../assets/img/patients/patient2.jpg";
 import Patient3 from "../../assets/img/patients/patient3.jpg";
+import doctor2 from "../../assets/img/doctors/doctor-thumb-02.jpg";
+
 import { dropdownPopup } from "../../hooks/dropdownPopup";
 
 const Header = () => {
@@ -79,7 +80,7 @@ const Header = () => {
                             <img
                               className="avatar-img rounded-circle"
                               alt="User Image"
-                              src={Doctor}
+                              src={doctor2}
                             />
                           </span>
                           <div className="media-body">
