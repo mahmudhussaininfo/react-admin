@@ -1,8 +1,13 @@
+import { useEffect } from "react";
 import doctor3 from "../../assets/img/doctors/doctor-thumb-02.jpg";
 import patient3 from "../../assets/img/patients/patient3.jpg";
 import ModalPopup from "../ModalPopup/ModalPopup";
+import DataTable from "datatables.net-dt";
 
 const Users = () => {
+  useEffect(() => {
+    new DataTable(".mamutable");
+  });
   return (
     <>
       <div className="page-header">
@@ -31,12 +36,12 @@ const Users = () => {
         <div className="row">
           <div className="col-md-12">
             <div className="card card-table">
-              <div className="card-header">
+              {/* <div className="card-header">
                 <h4 className="card-title">Appointment List</h4>
-              </div>
+              </div> */}
               <div className="card-body">
                 <div className="table-responsive">
-                  <table className="table table-hover table-center mb-0">
+                  <table className="mamutable table table-hover table-center mb-0">
                     <thead>
                       <tr>
                         <th>Doctor Name</th>

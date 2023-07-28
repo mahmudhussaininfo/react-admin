@@ -54,7 +54,7 @@ const Header = () => {
             <a
               href="#"
               className="dropdown-toggle nav-link"
-              data-toggle="dropdown"
+              // data-toggle="dropdown"
               onClick={toggleNotificationMenu}
             >
               <i className="fe fe-bell"></i>{" "}
@@ -191,7 +191,7 @@ const Header = () => {
             <a
               href="#"
               className="dropdown-toggle nav-link"
-              data-toggle="dropdown"
+              // data-toggle="dropdown"
               onClick={toggleMenu}
             >
               <span className="user-img">

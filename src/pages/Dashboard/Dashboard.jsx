@@ -1,7 +1,13 @@
 import ModalPopup from "../../components/ModalPopup/ModalPopup";
 import sp1 from "../../assets/img/specialities/specialities-01.png";
+import DataTable from "datatables.net-dt";
+import { useEffect } from "react";
 
 const Dashboard = () => {
+  useEffect(() => {
+    new DataTable(".datatable");
+  });
+
   return (
     <>
       <ModalPopup target="helloModal">
