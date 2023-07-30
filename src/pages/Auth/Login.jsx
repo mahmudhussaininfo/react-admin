@@ -45,7 +45,7 @@ const Login = () => {
     }
     if (user) {
       createToast(message, "success");
-      dispatch(setMessageEmpty());
+      // dispatch(setMessageEmpty());
     }
   }, [error, message, user]);
   return (

@@ -4,10 +4,16 @@ import Patient1 from "../../assets/img/patients/patient1.jpg";
 import Patient2 from "../../assets/img/patients/patient2.jpg";
 import Patient3 from "../../assets/img/patients/patient3.jpg";
 import doctor2 from "../../assets/img/doctors/doctor-thumb-02.jpg";
-
+import { useDispatch, useSelector } from "react-redux";
 import { dropdownPopup } from "../../hooks/dropdownPopup";
+import { logoutUser } from "../../features/auth/authApiSlice";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { error, message, user } = useSelector((state) => state.auth);
   const { isOpen, toggleMenu, dropDownRef } = dropdownPopup();
   const {
     isOpen: isNotificationOpen,
@@ -15,13 +21,18 @@ const Header = () => {
     dropDownRef: dropdownNotificationRef,
   } = dropdownPopup();
 
+  //logout
+  const handleLogout = (e) => {
+    e.preventDefault();
+    dispatch(logoutUser());
+  };
   return (
     <>
       <div className="header">
         <div className="header-left">
-          <a href="index.html" className="logo">
+          <Link to="/" className="logo">
             <img src={Logo} alt="Logo" />
-          </a>
+          </Link>
           <a href="index.html" className="logo logo-small">
             <img src={Logo} alt="Logo" width="30" height="30" />
           </a>
@@ -227,7 +238,7 @@ const Header = () => {
                 <a className="dropdown-item" href="settings.html">
                   Settings
                 </a>
-                <a className="dropdown-item" href="login.html">
+                <a className="dropdown-item" href="#" onClick={handleLogout}>
                   Logout
                 </a>
               </div>
