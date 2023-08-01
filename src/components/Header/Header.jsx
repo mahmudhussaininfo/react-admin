@@ -1,19 +1,21 @@
 import Logo from "../../assets/img/logo.png";
-import Avatar from "../../assets/img/profiles/avatar-01.jpg";
+import Avatar from "../../assets/img/profiles/avatar-05.jpg";
 import Patient1 from "../../assets/img/patients/patient1.jpg";
 import Patient2 from "../../assets/img/patients/patient2.jpg";
 import Patient3 from "../../assets/img/patients/patient3.jpg";
 import doctor2 from "../../assets/img/doctors/doctor-thumb-02.jpg";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { dropdownPopup } from "../../hooks/dropdownPopup";
 import { logoutUser } from "../../features/auth/authApiSlice";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import useAuthUser from "../../hooks/useAuthUser";
 
 const Header = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
-  const { error, message, user } = useSelector((state) => state.auth);
+  //get logged in user details
+  const { user } = useAuthUser();
+
   const { isOpen, toggleMenu, dropDownRef } = dropdownPopup();
   const {
     isOpen: isNotificationOpen,
@@ -208,9 +210,9 @@ const Header = () => {
               <span className="user-img">
                 <img
                   className="rounded-circle"
-                  src={Avatar}
+                  src={user?.photo ? user?.photo : Avatar}
                   width="31"
-                  alt="Ryan Taylor"
+                  alt={user?.name}
                 />
               </span>
             </a>
@@ -222,14 +224,14 @@ const Header = () => {
                 <div className="user-header">
                   <div className="avatar avatar-sm">
                     <img
-                      src={Avatar}
-                      alt="User Image"
+                      src={user?.photo ? user?.photo : Avatar}
+                      alt={user?.name}
                       className="avatar-img rounded-circle"
                     />
                   </div>
                   <div className="user-text">
-                    <h6>Ryan Taylor</h6>
-                    <p className="text-muted mb-0">Administrator</p>
+                    <h6>{user?.name}</h6>
+                    <p className="text-muted mb-0">{user?.role}</p>
                   </div>
                 </div>
                 <a className="dropdown-item" href="profile.html">

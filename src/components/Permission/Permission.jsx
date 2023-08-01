@@ -1,18 +1,17 @@
 import { useEffect } from "react";
 import doctor3 from "../../assets/img/doctors/doctor-thumb-02.jpg";
 import patient3 from "../../assets/img/patients/patient3.jpg";
-import ModalPopup from "../ModalPopup/ModalPopup";
 import DataTable from "datatables.net-dt";
 import PageHeader from "../PageHeader/PageHeader";
 
-const Users = () => {
+const Permission = () => {
   useEffect(() => {
     new DataTable(".mamutable");
   });
   return (
     <>
       <div className="page-header">
-        <PageHeader title="User" />
+        <PageHeader title="Permission" />
         <div className="row">
           <div className="col-md-12">
             <div className="card card-table">
@@ -309,4 +308,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default Permission;

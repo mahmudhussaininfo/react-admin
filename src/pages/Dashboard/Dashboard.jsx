@@ -2,6 +2,7 @@ import ModalPopup from "../../components/ModalPopup/ModalPopup";
 import sp1 from "../../assets/img/specialities/specialities-01.png";
 import DataTable from "datatables.net-dt";
 import { useEffect } from "react";
+import PageHeader from "../../components/PageHeader/PageHeader";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -16,19 +17,9 @@ const Dashboard = () => {
           ipsam.
         </p>
       </ModalPopup>
-      <div className="page-header">
-        <div className="row">
-          <div className="col-sm-12">
-            <h3 className="page-title">Welcome Admin!</h3>
-            <button data-target="#helloModal" data-toggle="modal">
-              add
-            </button>
-            <ul className="breadcrumb">
-              <li className="breadcrumb-item active">Dashboard</li>
-            </ul>
-          </div>
-        </div>
-      </div>
+
+      <PageHeader title="Dashboard" />
+
       <div className="row">
         <div className="col-xl-3 col-sm-6 col-12">
           <div className="card">
