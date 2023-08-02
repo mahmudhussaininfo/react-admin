@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
-import { BsPersonFillGear } from "react-icons/bs";
+import { BsPersonFillGear, BsFillLockFill } from "react-icons/bs";
+import { AiFillLock } from "react-icons/ai";
+import { BiUserCheck } from "react-icons/bi";
 
 const Sidebar = () => {
   return (
@@ -16,13 +18,55 @@ const Sidebar = () => {
                   <i className="fe fe-home"></i> <span>Dashboard</span>
                 </Link>
                 <Link to="/users">
-                  <i className="fe fe-user"></i> <span>Users</span>
+                  <i>
+                    <BiUserCheck />
+                  </i>{" "}
+                  <span>Users</span>
                 </Link>
+              </li>
+              <li className="">
+                <Link to="/users">
+                  <i>
+                    <BiUserCheck />
+                  </i>{" "}
+                  <span>orders</span>
+                </Link>
+              </li>
+              <li className="">
+                <Link to="/users">
+                  <i>
+                    <BiUserCheck />
+                  </i>{" "}
+                  <span>Products</span>
+                </Link>
+              </li>
+              <li className="">
+                <Link to="/users">
+                  <i>
+                    <BiUserCheck />
+                  </i>{" "}
+                  <span>Catagory</span>
+                </Link>
+              </li>
+              <li className="">
+                <Link to="/users">
+                  <i>
+                    <BiUserCheck />
+                  </i>{" "}
+                  <span>Brands</span>
+                </Link>
+              </li>
+              <li className="">
                 <Link to="/roles">
                   <i className="fe fe-user"></i> <span>Role</span>
                 </Link>
+              </li>
+              <li className="">
                 <Link to="/permission">
-                  <i className="fe fe-user"></i> <span>Permission</span>
+                  <i>
+                    <AiFillLock />
+                  </i>{" "}
+                  <span>Permission</span>
                 </Link>
               </li>
               <li className="menu-title">pages</li>

@@ -234,9 +234,9 @@ const Header = () => {
                     <p className="text-muted mb-0">{user?.role}</p>
                   </div>
                 </div>
-                <a className="dropdown-item" href="profile.html">
+                <Link className="dropdown-item" to="/profile">
                   My Profile
-                </a>
+                </Link>
                 <a className="dropdown-item" href="settings.html">
                   Settings
                 </a>
