@@ -7,15 +7,19 @@ const Profile = () => {
   const { user } = useAuthUser();
 
   const [edit, setEdit] = useState({
-    name: "",
-    email: "",
+    name: user.name,
+    email: user.email,
   });
 
-  // useEffect(() => {
-  //   const updateData = user.find((data) => data._id == id);
-  //   setEdit(updateData);
-  // });
   const handleSingleUser = () => {};
+
+  //handle input change
+  const handleChange = (e) => {
+    setEdit((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
   return (
     <>
@@ -172,7 +176,8 @@ const Profile = () => {
                                 type="text"
                                 name="name"
                                 className="form-control"
-                                value={user?.name}
+                                value={edit.name}
+                                onChange={handleChange}
                               />
                             </div>
                           </div>
@@ -183,7 +188,8 @@ const Profile = () => {
                                 type="email"
                                 className="form-control"
                                 name="email"
-                                value={user?.email}
+                                value={edit.email}
+                                onChange={handleChange}
                               />
                             </div>
                           </div>

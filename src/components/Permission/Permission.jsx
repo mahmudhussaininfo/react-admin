@@ -11,11 +11,11 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   createPermission,
   deletePermission,
-  getAllPermission,
   statusPermissionUpdate,
 } from "../../features/user/userApiSlice";
 import { createToast } from "../../utils/toast";
 import swal from "sweetalert";
+import { timeAgo } from "../../helper/helper";
 
 const Permission = () => {
   const dispatch = useDispatch();
@@ -79,9 +79,6 @@ const Permission = () => {
     }
   }, [error, message]);
 
-  useEffect(() => {
-    dispatch(getAllPermission());
-  }, [dispatch]);
   return (
     <>
       <div className="page-header">
@@ -127,7 +124,7 @@ const Permission = () => {
                               <td style={{ width: "50px" }}>{index + 1}</td>
                               <td>{item.name}</td>
                               <td>{item.slug}</td>
-                              <td>9 min ago</td>
+                              <td>{timeAgo(item.createdAt)}</td>
                               <td style={{ width: "220px" }}>
                                 <div className="status-toggle">
                                   <input

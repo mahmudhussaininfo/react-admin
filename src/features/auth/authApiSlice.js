@@ -64,8 +64,8 @@ export const loggedInUser = createAsyncThunk("auth/loggedInUser", async () => {
 // Update user
 export const updateUser = createAsyncThunk("auth/updateUser", async (id) => {
   try {
-    const response = await axios.get(
-      `http://localhost:5050/api/v1/auth/me/${id}`,
+    const response = await axios.patch(
+      `http://localhost:5050/api/v1/mamu/${id}`,
       {
         withCredentials: true,
       }
