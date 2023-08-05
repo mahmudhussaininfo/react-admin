@@ -74,3 +74,69 @@ export const statusPermissionUpdate = createAsyncThunk(
     }
   }
 );
+
+//get All Roles
+export const getAllRole = createAsyncThunk("user/getAllRole", async () => {
+  try {
+    const response = await axios.get("http://localhost:5050/api/v1/role", {
+      withCredentials: true,
+    });
+
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+});
+
+//Create Roles
+export const createRoles = createAsyncThunk(
+  "user/createRoles",
+  async (data) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5050/api/v1/role",
+        data,
+        {
+          withCredentials: true,
+        }
+      );
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+
+//delete Role
+export const deleteRole = createAsyncThunk("user/deleteRole", async (id) => {
+  try {
+    const response = await axios.delete(
+      `http://localhost:5050/api/v1/role/${id}`,
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+});
+
+//password change
+export const changePass = createAsyncThunk(
+  "user/changePass",
+  async ({ id, data }) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:5050/api/v1/mamu/password/${id}`,
+        data,
+        {
+          withCredentials: true,
+        }
+      );
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);

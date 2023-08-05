@@ -1,8 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  changePass,
   createPermission,
+  createRoles,
   deletePermission,
+  deleteRole,
   getAllPermission,
+  getAllRole,
   statusPermissionUpdate,
 } from "./userApiSlice";
 
@@ -35,6 +39,7 @@ const userSlice = createSlice({
         state.error = action.error.message;
       })
       .addCase(createPermission.fulfilled, (state, action) => {
+        state.permission = state.permission ?? [];
         state.permission.push(action.payload.permission);
         state.message = action.payload.message;
       })
@@ -56,6 +61,36 @@ const userSlice = createSlice({
             (data) => data._id == action.payload.permission._id
           )
         ] = action.payload.permission;
+      })
+      .addCase(getAllRole.rejected, (state, action) => {
+        state.error = action.error.message;
+      })
+      .addCase(getAllRole.fulfilled, (state, action) => {
+        state.message = action.payload.message;
+        state.role = action.payload;
+      })
+      .addCase(createRoles.rejected, (state, action) => {
+        state.error = action.error.message;
+      })
+      .addCase(createRoles.fulfilled, (state, action) => {
+        state.role = state.role ?? [];
+        state.role.push(action.payload.roles);
+        state.message = action.payload.message;
+      })
+      .addCase(deleteRole.rejected, (state, action) => {
+        state.error = action.error.message;
+      })
+      .addCase(deleteRole.fulfilled, (state, action) => {
+        state.role = state.role.filter(
+          (data) => data._id !== action.payload.roles._id
+        );
+        state.message = action.payload.message;
+      })
+      .addCase(changePass.rejected, (state, action) => {
+        state.error = action.error.message;
+      })
+      .addCase(changePass.fulfilled, (state, action) => {
+        state.message = action.payload.message;
       });
   },
 });

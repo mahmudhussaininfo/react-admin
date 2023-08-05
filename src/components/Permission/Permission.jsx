@@ -69,15 +69,15 @@ const Permission = () => {
   });
 
   useEffect(() => {
-    if (error) {
+    if (error && permission) {
       createToast(error, "error");
       dispatch(setMessageEmpty());
     }
-    if (message) {
+    if (message && permission) {
       createToast(message, "success");
       dispatch(setMessageEmpty());
     }
-  }, [error, message]);
+  }, [error, message, permission]);
 
   return (
     <>

@@ -10,16 +10,52 @@ import {
   setMessageEmpty,
 } from "../../features/user/userSlice";
 import { createToast } from "../../utils/toast";
+import { createRoles, deleteRole } from "../../features/user/userApiSlice";
+import { timeAgo } from "../../helper/helper";
+import swal from "sweetalert";
 
 const Roles = () => {
-  const {} = useDispatch();
-  const { input, handleChange } = useFormFields({
+  const dispatch = useDispatch();
+  const { input, handleChange, resetForm } = useFormFields({
     name: "",
   });
 
-  const { permission, error, message } = useSelector(getAllPrmissionData);
+  const { permission, role, error, message } = useSelector(getAllPrmissionData);
 
   const [selected, setSelected] = useState([]);
+
+  //handle Submit
+  const handleRoleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(
+      createRoles({
+        name: input.name,
+        permissions: [],
+      })
+    );
+    resetForm();
+    setSelected([]);
+  };
+
+  //handle Delete
+  const handleDelate = (id) => {
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this imaginary file!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        dispatch(deleteRole(id));
+        swal("Poof! Your imaginary file has been deleted!", {
+          icon: "success",
+        });
+      } else {
+        swal("Your imaginary file is safe!");
+      }
+    });
+  };
 
   const handleCheckboxChange = (e) => {
     const val = e.target.value;
@@ -37,20 +73,21 @@ const Roles = () => {
   });
 
   useEffect(() => {
-    if (error) {
+    if (error && role) {
       createToast(error, "error");
       dispatch(setMessageEmpty());
     }
-    if (message) {
+    if (message && role) {
       createToast(message, "success");
       dispatch(setMessageEmpty());
     }
-  }, [error, message]);
+  }, [error, message, role]);
+
   return (
     <>
       <div className="page-header">
         <ModalPopup target="userModalPopup" title="permission">
-          <form action="">
+          <form action="" onSubmit={handleRoleSubmit}>
             <div className="my-3">
               <label htmlFor="">Role Name</label>
               <input
@@ -78,7 +115,6 @@ const Roles = () => {
                   );
                 })}
             </div>
-
             <div className="my-3">
               <input type="submit" className="btn btn-primary btn-block" />
             </div>
@@ -90,46 +126,55 @@ const Roles = () => {
             <div className="card card-table">
               <div className="card-body">
                 <div className="table-responsive">
-                  <table className="mamutable table table-hover table-center mb-0">
-                    <thead>
-                      <tr>
-                        <th style={{ width: "50px" }}>1</th>
-                        <th>Name</th>
-                        <th>Slug</th>
-                        <th>Permission</th>
-                        <th>At a Time</th>
-                        <th>Status</th>
-                        <th className="text-right">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>1</td>
-                        <td>name</td>
-                        <td>slug</td>
-                        <td>permission</td>
-                        <td>at a time</td>
-                        <td style={{ width: "220px" }}>
-                          <div className="status-toggle">
-                            <input
-                              type="checkbox"
-                              id="status_1"
-                              className="check"
-                              checked={true}
-                            />
-                            <label htmlFor="status_1" className="checktoggle">
-                              checkbox
-                            </label>
-                          </div>
-                        </td>
-                        <td className="text-right">
-                          <button onClick={() => handleDelate(item._id)}>
-                            <BsTrashFill />
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  {role && (
+                    <table className="mamutable table table-hover table-center mb-0">
+                      <thead>
+                        <tr>
+                          <th style={{ width: "50px" }}>1</th>
+                          <th>Name</th>
+                          <th>Slug</th>
+                          <th>Permission</th>
+                          <th>At a Time</th>
+                          <th>Status</th>
+                          <th className="text-right">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {[...role]?.reverse().map((item, index) => {
+                          return (
+                            <tr key={index}>
+                              <td>{index + 1}</td>
+                              <td>{item.name}</td>
+                              <td>{item.slug}</td>
+                              <td>permission</td>
+                              <td>{timeAgo(item.createdAt)}</td>
+                              <td style={{ width: "220px" }}>
+                                <div className="status-toggle">
+                                  <input
+                                    type="checkbox"
+                                    id="status_1"
+                                    className="check"
+                                    checked={true}
+                                  />
+                                  <label
+                                    htmlFor="status_1"
+                                    className="checktoggle"
+                                  >
+                                    checkbox
+                                  </label>
+                                </div>
+                              </td>
+                              <td className="text-right">
+                                <button onClick={() => handleDelate(item._id)}>
+                                  <BsTrashFill />
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  )}
                 </div>
               </div>
             </div>

@@ -62,16 +62,20 @@ export const loggedInUser = createAsyncThunk("auth/loggedInUser", async () => {
 });
 
 // Update user
-export const updateUser = createAsyncThunk("auth/updateUser", async (id) => {
-  try {
-    const response = await axios.patch(
-      `http://localhost:5050/api/v1/mamu/${id}`,
-      {
-        withCredentials: true,
-      }
-    );
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response.data.message);
+export const updateUser = createAsyncThunk(
+  "auth/updateUser",
+  async ({ name, email, id }) => {
+    try {
+      const response = await axios.patch(
+        `http://localhost:5050/api/v1/mamu/${id}`,
+        { name, email },
+        {
+          withCredentials: true,
+        }
+      );
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
   }
-});
+);

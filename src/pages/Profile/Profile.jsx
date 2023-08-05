@@ -1,25 +1,83 @@
 import React, { useEffect, useState } from "react";
 import useAuthUser from "../../hooks/useAuthUser";
 import Avatar from "../../assets/img/profiles/avatar-05.jpg";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUser } from "../../features/auth/authApiSlice";
+import { createToast } from "../../utils/toast";
+import { changePass } from "../../features/user/userApiSlice";
+import {
+  getAllPrmissionData,
+  setMessageEmpty,
+} from "../../features/user/userSlice";
 
 const Profile = () => {
+  const dispatch = useDispatch();
+
+  const { error, message } = useSelector(getAllPrmissionData);
   //get logged in user details
   const { user } = useAuthUser();
 
+  //update state
   const [edit, setEdit] = useState({
     name: user.name,
     email: user.email,
   });
 
+  //password change state
+  const [passinput, setPassinput] = useState({
+    oldPass: "",
+    newPass: "",
+    conPass: "",
+  });
+
   const handleSingleUser = () => {};
 
-  //handle input change
+  //handle update input change
   const handleChange = (e) => {
     setEdit((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
   };
+
+  //handle input change for update
+  const handlePasswordChange = (e) => {
+    setPassinput((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleUpdateSubmit = (e) => {
+    e.preventDefault();
+    dispatch(
+      updateUser({ name: edit.name, email: edit.email, id: user._id })
+      // updateUser({ data: { name: edit.name, email: edit.email }, id: user._id })
+    );
+  };
+
+  //   <!-- handle change password form -->
+  const handlePassFormSubmit = (e) => {
+    e.preventDefault();
+    if (!passinput.oldPass || !passinput.newPass || !passinput.conPass) {
+      return createToast("All fields are required!", "warning");
+    }
+    if (passinput.newPass !== passinput.conPass)
+      return createToast("Confirm Password not match!", "warning");
+    dispatch(changePass({ id: user._id, data: passinput }));
+    setPassinput({ oldPass: "", newPass: "", conPass: "" });
+  };
+
+  useEffect(() => {
+    if (error) {
+      createToast(error, "error");
+      dispatch(setMessageEmpty());
+    }
+    if (message) {
+      createToast(message, "success");
+      dispatch(setMessageEmpty());
+    }
+  }, [error, message]);
 
   return (
     <>
@@ -50,11 +108,7 @@ const Profile = () => {
                   </div>
                 </div>
                 <div className="col-auto profile-btn">
-                  <a
-                    onClick={() => handleSingleUser(_id)}
-                    href="#"
-                    className="btn btn-primary"
-                  >
+                  <a href="#" className="btn btn-primary">
                     Edit
                   </a>
                 </div>
@@ -167,7 +221,7 @@ const Profile = () => {
                       </button>
                     </div>
                     <div className="modal-body">
-                      <form>
+                      <form onSubmit={handleUpdateSubmit}>
                         <div className="row form-row">
                           <div className="col-md-12 col-sm-6">
                             <div className="form-group">
@@ -176,7 +230,7 @@ const Profile = () => {
                                 type="text"
                                 name="name"
                                 className="form-control"
-                                value={edit.name}
+                                value={edit?.name}
                                 onChange={handleChange}
                               />
                             </div>
@@ -188,7 +242,7 @@ const Profile = () => {
                                 type="email"
                                 className="form-control"
                                 name="email"
-                                value={edit.email}
+                                value={edit?.email}
                                 onChange={handleChange}
                               />
                             </div>
@@ -215,18 +269,36 @@ const Profile = () => {
               <h5 className="card-title">Change Password</h5>
               <div className="row">
                 <div className="col-md-10 col-lg-6">
-                  <form>
+                  <form onSubmit={handlePassFormSubmit}>
                     <div className="form-group">
                       <label>Old Password</label>
-                      <input type="password" className="form-control" />
+                      <input
+                        type="password"
+                        name="oldPass"
+                        value={passinput.oldPass}
+                        onChange={handlePasswordChange}
+                        className="form-control"
+                      />
                     </div>
                     <div className="form-group">
                       <label>New Password</label>
-                      <input type="password" className="form-control" />
+                      <input
+                        type="password"
+                        name="newPass"
+                        value={passinput.newPass}
+                        onChange={handlePasswordChange}
+                        className="form-control"
+                      />
                     </div>
                     <div className="form-group">
                       <label>Confirm Password</label>
-                      <input type="password" className="form-control" />
+                      <input
+                        type="password"
+                        name="conPass"
+                        value={passinput.conPass}
+                        onChange={handlePasswordChange}
+                        className="form-control"
+                      />
                     </div>
                     <button className="btn btn-primary" type="submit">
                       Save Changes

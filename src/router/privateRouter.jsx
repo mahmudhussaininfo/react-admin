@@ -6,6 +6,7 @@ import PrivateGard from "./PrivateGard";
 import Profile from "../pages/Profile/Profile";
 import Roles from "../components/Role/Role";
 import Permission from "../components/Permission/Permission";
+import Mamu from "../components/Mamu/Mamu";
 
 //private router
 const privateRouter = [
@@ -34,6 +35,10 @@ const privateRouter = [
           {
             path: "/profile",
             element: <Profile />,
+          },
+          {
+            path: "/mamu",
+            element: <Mamu />,
           },
         ],
       },
