@@ -99,7 +99,7 @@ const Permission = () => {
             </div>
           </form>
         </ModalPopup>
-        <PageHeader title="User" />
+        <PageHeader title="Permission" />
         <div className="row">
           <div className="col-md-12">
             <div className="card card-table">

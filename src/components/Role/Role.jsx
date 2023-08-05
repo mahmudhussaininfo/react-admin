@@ -10,7 +10,11 @@ import {
   setMessageEmpty,
 } from "../../features/user/userSlice";
 import { createToast } from "../../utils/toast";
-import { createRoles, deleteRole } from "../../features/user/userApiSlice";
+import {
+  createRoles,
+  deleteRole,
+  statusRoleUpdate,
+} from "../../features/user/userApiSlice";
 import { timeAgo } from "../../helper/helper";
 import swal from "sweetalert";
 
@@ -30,7 +34,7 @@ const Roles = () => {
     dispatch(
       createRoles({
         name: input.name,
-        permissions: [],
+        permissions: [...selected],
       })
     );
     resetForm();
@@ -66,6 +70,11 @@ const Roles = () => {
       updateList.push(val);
     }
     setSelected(updateList);
+  };
+
+  //status update
+  const handleStautsUpdate = (status, id) => {
+    dispatch(statusRoleUpdate({ status, id }));
   };
 
   useEffect(() => {
@@ -146,7 +155,13 @@ const Roles = () => {
                               <td>{index + 1}</td>
                               <td>{item.name}</td>
                               <td>{item.slug}</td>
-                              <td>permission</td>
+                              <td>
+                                <ul>
+                                  {item.permissions.map((per, index) => {
+                                    return <li key={index + 1}>{per}</li>;
+                                  })}
+                                </ul>
+                              </td>
                               <td>{timeAgo(item.createdAt)}</td>
                               <td style={{ width: "220px" }}>
                                 <div className="status-toggle">
@@ -154,9 +169,12 @@ const Roles = () => {
                                     type="checkbox"
                                     id="status_1"
                                     className="check"
-                                    checked={true}
+                                    checked={item.status ? true : false}
                                   />
                                   <label
+                                    onClick={() =>
+                                      handleStautsUpdate(item.status, item._id)
+                                    }
                                     htmlFor="status_1"
                                     className="checktoggle"
                                   >

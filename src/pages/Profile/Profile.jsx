@@ -50,10 +50,10 @@ const Profile = () => {
 
   const handleUpdateSubmit = (e) => {
     e.preventDefault();
-    dispatch(
-      updateUser({ name: edit.name, email: edit.email, id: user._id })
-      // updateUser({ data: { name: edit.name, email: edit.email }, id: user._id })
-    );
+    dispatch(updateUser({ name: edit.name, email: edit.email, id: user._id }));
+    setEdit({ name: "", email: "" });
+
+    // updateUser({ data: { name: edit.name, email: edit.email }, id: user._id })
   };
 
   //   <!-- handle change password form -->

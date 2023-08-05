@@ -8,6 +8,7 @@ import {
   getAllPermission,
   getAllRole,
   statusPermissionUpdate,
+  statusRoleUpdate,
 } from "./userApiSlice";
 
 //create user slice
@@ -91,6 +92,14 @@ const userSlice = createSlice({
       })
       .addCase(changePass.fulfilled, (state, action) => {
         state.message = action.payload.message;
+      })
+      .addCase(statusRoleUpdate.rejected, (state, action) => {
+        state.error = action.error.message;
+      })
+      .addCase(statusRoleUpdate.fulfilled, (state, action) => {
+        state.role[
+          state.role.findIndex((data) => data._id == action.payload.roles._id)
+        ] = action.payload.roles;
       });
   },
 });

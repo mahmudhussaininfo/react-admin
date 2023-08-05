@@ -122,6 +122,25 @@ export const deleteRole = createAsyncThunk("user/deleteRole", async (id) => {
   }
 });
 
+//Status update Permission
+export const statusRoleUpdate = createAsyncThunk(
+  "user/statusRoleUpdate",
+  async ({ status, id }) => {
+    try {
+      const response = await axios.patch(
+        `http://localhost:5050/api/v1/role/status/${id}`,
+        { status },
+        {
+          withCredentials: true,
+        }
+      );
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+
 //password change
 export const changePass = createAsyncThunk(
   "user/changePass",
