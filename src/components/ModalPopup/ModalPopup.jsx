@@ -17,28 +17,7 @@ const ModalPopup = ({ target, children, title }) => {
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div className="modal-body">
-              {children}
-              {/* <form>
-                <div className="row form-row">
-                  <div className="col-12 col-sm-6">
-                    <div className="form-group">
-                      <label>Specialities</label>
-                      <input type="text" className="form-control" />
-                    </div>
-                  </div>
-                  <div className="col-12 col-sm-6">
-                    <div className="form-group">
-                      <label>Image</label>
-                      <input type="file" className="form-control" />
-                    </div>
-                  </div>
-                </div>
-                <button type="submit" className="btn btn-primary btn-block">
-                  Save Changes
-                </button>
-              </form> */}
-            </div>
+            <div className="modal-body">{children}</div>
           </div>
         </div>
       </div>

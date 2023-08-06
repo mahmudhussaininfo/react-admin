@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { BsTrashFill } from "react-icons/bs";
+import { BiEdit } from "react-icons/bi";
 import DataTable from "datatables.net-dt";
 import PageHeader from "../PageHeader/PageHeader";
 import ModalPopup from "../ModalPopup/ModalPopup";
@@ -13,6 +14,7 @@ import { createToast } from "../../utils/toast";
 import {
   createRoles,
   deleteRole,
+  roleUpdate,
   statusRoleUpdate,
 } from "../../features/user/userApiSlice";
 import { timeAgo } from "../../helper/helper";
@@ -27,6 +29,36 @@ const Roles = () => {
   const { permission, role, error, message } = useSelector(getAllPrmissionData);
 
   const [selected, setSelected] = useState([]);
+
+  const [edit, setEdit] = useState("");
+
+  //handleRole Edit
+  const handleRoleEdit = (id) => {
+    const findRole = role.find((data) => data._id === id);
+    console.log(findRole);
+    setEdit(findRole);
+    setSelected(findRole.permissions);
+  };
+
+  //handle change for role edit
+  const handleRoleEditChange = (e) => {
+    setEdit((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  // role edit submit handler
+  const handleRoleEditSubmit = (e) => {
+    e.preventDefault();
+    dispatch(
+      roleUpdate({
+        id: edit._id,
+        name: edit.name,
+        permissions: selected,
+      })
+    );
+  };
 
   //handle Submit
   const handleRoleSubmit = (e) => {
@@ -95,7 +127,7 @@ const Roles = () => {
   return (
     <>
       <div className="page-header">
-        <ModalPopup target="userModalPopup" title="permission">
+        <ModalPopup target="userRolePopup" title="permission">
           <form action="" onSubmit={handleRoleSubmit}>
             <div className="my-3">
               <label htmlFor="">Role Name</label>
@@ -129,7 +161,57 @@ const Roles = () => {
             </div>
           </form>
         </ModalPopup>
+
+        <ModalPopup target="roleEdit" title="edit Role">
+          <form action="" onSubmit={handleRoleEditSubmit}>
+            <div className="my-3">
+              <label htmlFor="">Role Name</label>
+              <input
+                type="text"
+                name="name"
+                value={edit.name}
+                onChange={handleRoleEditChange}
+                className="form-control"
+              />
+            </div>
+            <div className="my-2">
+              <label htmlFor="">Permission</label>
+              {permission &&
+                permission.map((item, index) => {
+                  return (
+                    <label className="d-block" key={index}>
+                      <input
+                        value={item.name}
+                        checked={selected?.includes(item.name)}
+                        onChange={handleCheckboxChange}
+                        type="checkbox"
+                      />{" "}
+                      <span> {item.name}</span>
+                    </label>
+                  );
+                })}
+            </div>
+            <div className="my-3">
+              <button type="submit" className="btn btn-primary btn-block">
+                Update
+              </button>
+            </div>
+          </form>
+        </ModalPopup>
+
         <PageHeader title="Roles" />
+        <div className="row">
+          <div className="col">
+            <button
+              className="btn btn-primary"
+              data-target="#userRolePopup"
+              data-toggle="modal"
+            >
+              Add New Roles
+            </button>{" "}
+            <br /> <br />
+          </div>
+        </div>
         <div className="row">
           <div className="col-md-12">
             <div className="card card-table">
@@ -183,6 +265,14 @@ const Roles = () => {
                                 </div>
                               </td>
                               <td className="text-right">
+                                <button
+                                  data-toggle="modal"
+                                  data-target="#roleEdit"
+                                  onClick={() => handleRoleEdit(item._id)}
+                                >
+                                  <BiEdit />
+                                </button>{" "}
+                                &nbsp;
                                 <button onClick={() => handleDelate(item._id)}>
                                   <BsTrashFill />
                                 </button>

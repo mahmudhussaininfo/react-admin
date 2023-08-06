@@ -1,12 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   changePass,
+  createMamuUser,
   createPermission,
   createRoles,
   deletePermission,
   deleteRole,
   getAllPermission,
   getAllRole,
+  permissionUpdate,
+  roleUpdate,
   statusPermissionUpdate,
   statusRoleUpdate,
 } from "./userApiSlice";
@@ -43,6 +46,16 @@ const userSlice = createSlice({
         state.permission = state.permission ?? [];
         state.permission.push(action.payload.permission);
         state.message = action.payload.message;
+      })
+      .addCase(permissionUpdate.rejected, (state, action) => {
+        state.error = action.error.message;
+      })
+      .addCase(permissionUpdate.fulfilled, (state, action) => {
+        state.permission[
+          state.permission.findIndex(
+            (data) => data._id == action.payload.permission._id
+          )
+        ] = action.payload.permission;
       })
       .addCase(deletePermission.rejected, (state, action) => {
         state.error = action.error.message;
@@ -100,6 +113,22 @@ const userSlice = createSlice({
         state.role[
           state.role.findIndex((data) => data._id == action.payload.roles._id)
         ] = action.payload.roles;
+      })
+      .addCase(roleUpdate.rejected, (state, action) => {
+        state.error = action.error.message;
+      })
+      .addCase(roleUpdate.fulfilled, (state, action) => {
+        state.role[
+          state.role.findIndex((data) => data._id === action.payload.roles._id)
+        ] = action.payload.roles;
+      })
+      .addCase(createMamuUser.rejected, (state, action) => {
+        state.error = action.error.message;
+      })
+      .addCase(createMamuUser.fulfilled, (state, action) => {
+        state.user = state.user ?? [];
+        state.user.push(action.payload.user);
+        state.message = action.payload.message;
       });
   },
 });

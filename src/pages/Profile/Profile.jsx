@@ -210,7 +210,7 @@ const Profile = () => {
                 >
                   <div className="modal-content">
                     <div className="modal-header">
-                      <h5 className="modal-title">Personal Details</h5>
+                      <h5 className="modal-title">Update your Profile</h5>
                       <button
                         type="button"
                         className="close"
@@ -252,7 +252,7 @@ const Profile = () => {
                           type="submit"
                           className="btn btn-primary btn-block"
                         >
-                          Save Changes
+                          Update
                         </button>
                       </form>
                     </div>

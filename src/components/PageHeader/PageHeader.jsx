@@ -11,14 +11,6 @@ const PageHeader = ({ title }) => {
         <div className="row">
           <div className="col-sm-12">
             <h3 className="page-title mb-3">Welcome to {user?.name}!</h3>
-            <button
-              className="btn btn-primary"
-              data-target="#userModalPopup"
-              data-toggle="modal"
-            >
-              Add New User
-            </button>
-            <br /> <br />
             <ul className="breadcrumb">
               <li className="breadcrumb-item active">{title}</li>
             </ul>

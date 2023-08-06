@@ -56,6 +56,25 @@ export const deletePermission = createAsyncThunk(
   }
 );
 
+//update Permission
+export const permissionUpdate = createAsyncThunk(
+  "user/permissionUpdate",
+  async (data) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:5050/api/v1/permission/${data.id}`,
+        data,
+        {
+          withCredentials: true,
+        }
+      );
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+
 //Status update Permission
 export const statusPermissionUpdate = createAsyncThunk(
   "user/statusPermissionUpdate",
@@ -141,6 +160,40 @@ export const statusRoleUpdate = createAsyncThunk(
   }
 );
 
+//Role update (mystyle) Permission
+// export const roleUpdate = createAsyncThunk(
+//   "user/roleUpdate",
+//   async ({ id, name, permissions }) => {
+//     try {
+//       const response = await axios.patch(
+//         `http://localhost:5050/api/v1/role/${id}`,
+//         { name, permissions },
+//         {
+//           withCredentials: true,
+//         }
+//       );
+//       return response.data;
+//     } catch (error) {
+//       throw new Error(error.response.data.message);
+//     }
+//   }
+// );
+
+export const roleUpdate = createAsyncThunk("user/roleUpdate", async (data) => {
+  try {
+    const response = await axios.patch(
+      `http://localhost:5050/api/v1/role/${data.id}`,
+      data,
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+});
+
 //password change
 export const changePass = createAsyncThunk(
   "user/changePass",
@@ -153,6 +206,26 @@ export const changePass = createAsyncThunk(
           withCredentials: true,
         }
       );
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+
+//Create User
+export const createMamuUser = createAsyncThunk(
+  "user/createMamuUser",
+  async (data) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5050/api/v1/mamu",
+        data,
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(response.data);
       return response.data;
     } catch (error) {
       throw new Error(error.response.data.message);
