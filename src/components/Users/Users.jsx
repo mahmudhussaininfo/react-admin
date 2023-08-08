@@ -6,21 +6,26 @@ import PageHeader from "../PageHeader/PageHeader";
 import ModalPopup from "../ModalPopup/ModalPopup";
 import useFormFields from "../../hooks/useFormFields";
 import { useDispatch, useSelector } from "react-redux";
-import { generateRandomPassword } from "../../helper/helper";
+import { generateRandomPassword, timeAgo } from "../../helper/helper";
 import { createToast } from "../../utils/toast";
 import {
   getAllPrmissionData,
   setMessageEmpty,
 } from "../../features/user/userSlice";
-import { createMamuUser } from "../../features/user/userApiSlice";
+import {
+  createMamuUser,
+  statusMamuUserUpdate,
+} from "../../features/user/userApiSlice";
 
 const Users = () => {
   const dispatch = useDispatch();
   const { user, role, error, message } = useSelector(getAllPrmissionData);
+
   const { input, handleChange, resetForm, setInput } = useFormFields({
     name: "",
     email: "",
     password: "",
+    role: "",
   });
 
   //random password genarator
@@ -34,10 +39,19 @@ const Users = () => {
     }));
   };
 
+  // const handleOptionChange = (e) => {
+  //   console.log(e.target.value);
+  // };
+
   //create User
   const handleUserSubmit = (e) => {
     e.preventDefault();
     dispatch(createMamuUser(input));
+  };
+
+  //status update
+  const handleStautsUpdate = (status, id) => {
+    dispatch(statusMamuUserUpdate({ status, id }));
   };
 
   useEffect(() => {
@@ -45,15 +59,15 @@ const Users = () => {
   });
 
   useEffect(() => {
-    if (error && user) {
+    if (error) {
       createToast(error, "error");
       dispatch(setMessageEmpty());
     }
-    if (message && user) {
+    if (message) {
       createToast(message, "success");
       dispatch(setMessageEmpty());
     }
-  }, [error, message, user]);
+  }, [error, message, dispatch]);
   return (
     <>
       <div className="page-header">
@@ -80,7 +94,7 @@ const Users = () => {
               />
             </div>
             <div className="my-3">
-              <label htmlFor="">Pasword</label>
+              <label htmlFor="">Password</label>
               <input
                 type="text"
                 name="password"
@@ -95,6 +109,24 @@ const Users = () => {
               >
                 Random Password
               </a>
+            </div>
+            <div className="my-3">
+              <select
+                name="role"
+                id=""
+                className="form-control"
+                value={input.role}
+                onChange={handleChange}
+              >
+                <option value="">--selected--</option>
+                {role?.map((item, index) => {
+                  return (
+                    <option value={item._id} key={index}>
+                      {item.name}
+                    </option>
+                  );
+                })}
+              </select>
             </div>
             <div className="my-3">
               <input type="submit" className="btn btn-primary btn-block" />
@@ -119,52 +151,65 @@ const Users = () => {
             <div className="card card-table">
               <div className="card-body">
                 <div className="table-responsive">
-                  <table className="mamutable table table-hover table-center mb-0">
-                    <thead>
-                      <tr>
-                        <th style={{ width: "50px" }}>1</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>At a Time</th>
-                        <th>Status</th>
-                        <th className="text-right">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>1</td>
-                        <td>Name</td>
-                        <td>Email</td>
-                        <td>
-                          <ul>role</ul>
-                        </td>
-                        <td>createdAt</td>
-                        <td style={{ width: "220px" }}>
-                          <div className="status-toggle">
-                            <input
-                              type="checkbox"
-                              id="status_1"
-                              className="check"
-                              checked={true}
-                            />
-                            <label htmlFor="status_1" className="checktoggle">
-                              checkbox
-                            </label>
-                          </div>
-                        </td>
-                        <td className="text-right">
-                          <button data-toggle="modal" data-target="#roleEdit">
-                            <BiEdit />
-                          </button>
-                          &nbsp;
-                          <button>
-                            <BsTrashFill />
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  {user && (
+                    <table className="mamutable table table-hover table-center mb-0">
+                      <thead>
+                        <tr>
+                          <th style={{ width: "50px" }}>1</th>
+                          <th>Name</th>
+                          <th>Email</th>
+                          <th>Role</th>
+                          <th>At a Time</th>
+                          <th>Status</th>
+                          <th className="text-right">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {[...user].reverse().map((item, index) => {
+                          return (
+                            <tr key={index}>
+                              <td>{index + 1}</td>
+                              <td>{item.name}</td>
+                              <td>{item.email}</td>
+                              <td>{item?.role?.name}</td>
+                              <td>{timeAgo(item.createdAt)}</td>
+                              <td style={{ width: "220px" }}>
+                                <div className="status-toggle">
+                                  <input
+                                    type="checkbox"
+                                    id="status_1"
+                                    className="check"
+                                    checked={item.status ? true : false}
+                                  />
+                                  <label
+                                    onClick={() =>
+                                      handleStautsUpdate(item.status, item._id)
+                                    }
+                                    htmlFor="status_1"
+                                    className="checktoggle"
+                                  >
+                                    checkbox
+                                  </label>
+                                </div>
+                              </td>
+                              <td className="text-right">
+                                <button
+                                  data-toggle="modal"
+                                  data-target="#roleEdit"
+                                >
+                                  <BiEdit />
+                                </button>
+                                &nbsp;
+                                <button>
+                                  <BsTrashFill />
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  )}
                 </div>
               </div>
             </div>

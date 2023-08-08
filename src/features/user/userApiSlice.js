@@ -214,6 +214,18 @@ export const changePass = createAsyncThunk(
 );
 
 //Create User
+export const getMamuUser = createAsyncThunk("user/getMamuUser", async () => {
+  try {
+    const response = await axios.get("http://localhost:5050/api/v1/mamu", {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+});
+
+//Create User
 export const createMamuUser = createAsyncThunk(
   "user/createMamuUser",
   async (data) => {
@@ -225,7 +237,25 @@ export const createMamuUser = createAsyncThunk(
           withCredentials: true,
         }
       );
-      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+
+//Status update USer
+export const statusMamuUserUpdate = createAsyncThunk(
+  "user/statusMamuUserUpdate",
+  async ({ status, id }) => {
+    try {
+      const response = await axios.patch(
+        `http://localhost:5050/api/v1/mamu/status/${id}`,
+        { status },
+        {
+          withCredentials: true,
+        }
+      );
       return response.data;
     } catch (error) {
       throw new Error(error.response.data.message);

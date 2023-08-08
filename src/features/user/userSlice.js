@@ -8,8 +8,10 @@ import {
   deleteRole,
   getAllPermission,
   getAllRole,
+  getMamuUser,
   permissionUpdate,
   roleUpdate,
+  statusMamuUserUpdate,
   statusPermissionUpdate,
   statusRoleUpdate,
 } from "./userApiSlice";
@@ -122,6 +124,13 @@ const userSlice = createSlice({
           state.role.findIndex((data) => data._id === action.payload.roles._id)
         ] = action.payload.roles;
       })
+      .addCase(getMamuUser.rejected, (state, action) => {
+        state.error = action.error.message;
+      })
+      .addCase(getMamuUser.fulfilled, (state, action) => {
+        state.message = action.payload.message;
+        state.user = action.payload;
+      })
       .addCase(createMamuUser.rejected, (state, action) => {
         state.error = action.error.message;
       })
@@ -129,6 +138,14 @@ const userSlice = createSlice({
         state.user = state.user ?? [];
         state.user.push(action.payload.user);
         state.message = action.payload.message;
+      })
+      .addCase(statusMamuUserUpdate.rejected, (state, action) => {
+        state.error = action.error.message;
+      })
+      .addCase(statusMamuUserUpdate.fulfilled, (state, action) => {
+        state.user[
+          state.user.findIndex((data) => data._id == action.payload.user._id)
+        ] = action.payload.user;
       });
   },
 });
